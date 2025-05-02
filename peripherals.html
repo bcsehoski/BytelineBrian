@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="cart.html">Cart</a>
+          </nav>
+    </header>
+    <main>
+        <section class="search-section">
+            <div class="search-header">
+                Choose from all of our peripherals!
+            </div>
+            
+        </section>
+        <section id="product-container" class="product-grid"></section>
+    </main>
+
+    <div class="footer">
+        &copy; 2025 ByteLine Project – Built by HU Students 💻
+    </div>
+
+    <script>
+        async function fetchPeripherals() {
+            try {
+                const response = await fetch('http://localhost:5004/api/peripherals');
+                const peripherals = await response.json();
+
+                const container = document.getElementById('product-container');
+
+                peripherals.forEach(peripheral => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${peripheral.image}" alt="${peripheral.name}">
+                    <h2>${peripheral.name}</h2>
+                    <p>$${parseFloat(peripheral.price).toFixed(2)}</p>
+                    <button>Add to Cart</button>
+                `;
+                container.appendChild(card);
+                });
+            } catch (err) {
+                console.error('Failed to fetch peripherals:', err);
+            }
+        }
+
+        fetchPeripherals();
+    </script>
+
+</body>
+</html>

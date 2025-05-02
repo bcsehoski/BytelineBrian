@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Login page</h1>
+    </header>
+    <main>
+        <section class="login-section">
+            <div class="login-row">
+                <div class="login-container">
+                    <h1>User Login</h1>
+                    <div class="input-box">
+                        <input id="user-email" type="text" placeholder="Email" required>
+                    </div>
+                    <div class="input-box">
+                        <input id="user-password" type="password" placeholder="Password" required>
+                    </div>
+                    <button id="user-login-btn" class="btn">Login</button>
+                </div>
+                <div class="login-container">
+                    <h1>Admin Login</h1>
+                    <div class="input-box">
+                        <input id="admin-username" type="text" placeholder="Username" required>
+                    </div>
+                    <div class="input-box">
+                        <input id="admin-password" type="password" placeholder="Password" required>
+                    </div>
+                    <button id="admin-login-btn" class="btn">Login</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="footer">
+        &copy; 2025 ByteLine Project – Built by HU Students 💻
+    </div>
+
+    <script>
+        async function loginUser() {
+            const email = document.getElementById('user-email').value;
+            const password = document.getElementById('user-password').value;
+
+            try {
+                const response = await fetch('http://localhost:5004/api/login/user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    window.location.href = 'index.html'; // Redirect to user homepage
+                } else {
+                    alert(result.error);
+                }
+            } catch (err) {
+                console.error('Login failed:', err);
+            }
+        }
+
+        async function loginAdmin() {
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+
+            try {
+                const response = await fetch('http://localhost:5004/api/login/admin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                    window.location.href = 'admin.html'; // Redirect to admin homepage
+                } else {
+                    alert(result.error);
+                }
+            } catch (err) {
+                console.error('Login failed:', err);
+            }
+        }
+
+        document.getElementById('user-login-btn').addEventListener('click', loginUser);
+        document.getElementById('admin-login-btn').addEventListener('click', loginAdmin);
+    </script>
+</body>
+</html>
